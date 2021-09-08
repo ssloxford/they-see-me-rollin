@@ -37,7 +37,7 @@ This folder includes everything you need to run the evaluation yourself.
 
 The following flowchart illustrates the flow of the evaluation.
 
-<p align="center"><img src="https://github.com/OXSKCS/theyseemerollin_artifiact/blob/main/comparison_to_blinding/doc/flowchart_comparison_with_blinding.jpg" width="70%"><br><em style="color: grey">Fig. 1: Flowchart.</em></p>
+<p align="center"><img src="https://github.com/ssloxford/they-see-me-rollin/blob/main/comparison_to_blinding/doc/flowchart_comparison_with_blinding.jpg" width="70%"><br><em style="color: grey">Fig. 1: Flowchart illustrating the flow of the run_evaluation.py script.</em></p>
 
 ## Running the Evaluation
 
