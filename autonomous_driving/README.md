@@ -9,14 +9,14 @@ The two scenarios are depicted in Figure 1.
 <table align="center"><tr>
 <td> 
   <p align="center">
-    <img src="https://github.com/OXSKCS/theyseemerollin_artifiact/blob/main/pylot/doc/scenario_1.gif" width="400">
+    <img src="https://github.com/ssloxford/they-see-me-rollin/blob/main/autonomous_driving/doc/scenario_1.gif" width="400">
     <br>
     <em style="color: grey">a) Scenario 1</em>
   </p> 
 </td>
 <td> 
   <p align="center">
-    <img src="https://github.com/OXSKCS/theyseemerollin_artifiact/blob/main/pylot/doc/scenario_2.gif" width="400">
+    <img src="https://github.com/ssloxford/they-see-me-rollin/blob/main/autonomous_driving/doc/scenario_2.gif" width="400">
     <br>
     <em style="color: grey">b) Scenario 2</em>
   </p> 
