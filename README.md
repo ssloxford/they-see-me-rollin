@@ -6,7 +6,7 @@ In this paper, we present a novel attack that exploits the electronic rolling sh
 We show how the rolling shutter can be exploited using a bright, modulated light source (e.g., an inexpensive, off-the-shelf laser), to inject fine-grained image disruptions.
 Figure 1 illustrates the row-wise acquisition of a legitimate frame and a malicious frame where light is injected during the exposure of a row, leading to distortions in a small part of the frame.
 
-<p align="center"><img src="https://via.placeholder.com/800x200.png" width="75%"><br><em style="color: grey">Fig. 1: Illustration of the row-wise acquisition of a legitimate and a malicious frame.</em></p>
+<p align="center"><img src="https://github.com/ssloxford/they-see-me-rollin/blob/main/doc/rolling_shutter_example.gif" width="25%"><br><em style="color: grey">Fig. 1: Illustration of the row-wise acquisition of a legitimate and a malicious frame.</em></p>
 
 We evaluate the Rolling Shutter Attack on the use case of object detection by partially simulating it on the BDD100K and the VIRAT dataset.
 We tested two well-known, state-of-the-art object detectors, namely FRCNN and SSD.
@@ -14,7 +14,7 @@ Figure 2 shows an example of how object detection is affected by the Rolling Shu
 A network (SSD) detects objects in input images, shown with green boxes on the left. 
 After overlaying the attack distortions on the image some objects are completely hidden 🟥, misplaced 🟧 or unaltered 🟩.
 
-<p align="center"><img src="https://via.placeholder.com/800x200.png" width="75%"><br><em style="color: grey">Fig. 2: Example frames that show how object detection is affected by the Rolling Shutter Attack.</em></p>
+<p align="center"><img src="https://github.com/ssloxford/they-see-me-rollin/blob/main/doc/object_detection_vis.jpg" width="75%"><br><em style="color: grey">Fig. 2: Example frames that show how object detection is affected by the Rolling Shutter Attack.</em></p>
 
 Furthermore, we analyze the amount of distortion caused by the Rolling Shutter Attack in comparison to fully blinding, showing that for short exposure values, our attack causes interference that is similar to the expected level of perturbation seen in consecutive legitimate video frames. 
 Finally, we test the effects of the Rolling Shutter Attack on autonomous driving.
