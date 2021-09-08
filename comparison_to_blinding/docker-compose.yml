@@ -1,0 +1,17 @@
+version: "3.5"
+services:
+    comparison_to_blinding:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        network_mode: "host"
+        privileged: true
+        image: comparison_to_blinding:comparison_to_blinding
+        environment:
+            - DISPLAY=$DISPLAY
+        container_name: comparison_to_blinding
+        stdin_open: true
+        tty: true
+        volumes:
+            - "./code:/home/code"
+            - "./data:/home/data"

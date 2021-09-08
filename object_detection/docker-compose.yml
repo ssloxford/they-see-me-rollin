@@ -1,0 +1,21 @@
+version: "3"
+services:
+    theyseemerolling:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: theyseemerollin_artifacts_eval:theyseemerollin_artifacts_eval
+        ports:
+            - "7331:7331"
+        environment:
+            - QT_X11_NO_MITSHM=1
+            - DISPLAY=$DISPLAY
+            - NVIDIA_VISIBLE_DEVICES=all
+        container_name: ra_evaluation
+        # runtime: nvidia
+        stdin_open: true
+        tty: true
+        volumes:
+            - "/tmp/.X11-unix:/tmp/.X11-unix:rw"
+            - "./rsa:/home/rsa"
+            - "./data:/home/data"

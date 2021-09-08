@@ -1,0 +1,14 @@
+datasets:
+  bdd100k:
+    dataset_dir: "/home/data/datasets/bdd100k/"
+    dataset_subdir: "val"
+    network_input_width: 640
+    network_input_height: 360
+model_names:
+  - "ssd_inception_v2_coco_2018_01_28"
+  - "faster_rcnn_inception_v2_coco_2018_01_28"
+defaults:
+  batch_size: 10
+  mscoco_label_map_path: /home/models/research/object_detection/data/mscoco_label_map.pbtxt
+  dataset_name: "bdd100k"
+

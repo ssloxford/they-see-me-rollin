@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+    pylot:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: erdosproject/pylot:latest
+        deploy:
+            resources:
+               reservations:
+                  devices:
+                      - driver: nvidia
+                        capabilities: [compute,utility,graphics,compat32]
+        environment:
+            - QT_X11_NO_MITSHM=1
+            - DISPLAY=$DISPLAY
+        container_name: pylot
+        network_mode: "host"
+        stdin_open: true
+        tty: true
+        volumes:
+            - "./rsa:/home/erdos/rsa"
+
