@@ -27,15 +27,15 @@ In more detail, this repository is structred as follows:
 
 #### Section 7.1 - Targeting Object Detection
 
-The folder `object_detection` contains the source code we used in Section 7.1 - Targeting Object Detection.
+The folder `object_detection` contains the source code we used in `Section 6.2 - Accuracy of the Shutter Model` and `Section 7.1 - Targeting Object Detection`.
 
 #### Section 7.2 - Comparison with Blinding Attack
 
-The folder `comparison_to_blinding` contains the source code we used in Section 7.2 - Comparison with Blinding Attack.
+The folder `comparison_to_blinding` contains the source code we used in `Section 7.2 - Comparison with Blinding Attack`.
 
 #### Appendix C - Effects on Autonomous Driving 
 
-The folder `autonomous_driving` contains the source code we used in Appendix C - Effects on Autonomous Driving.
+The folder `autonomous_driving` contains the source code we used in `Appendix C - Effects on Autonomous Driving`.
 
 ## How to use this Repository 
 
