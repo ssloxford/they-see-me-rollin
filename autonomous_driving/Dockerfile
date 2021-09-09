@@ -33,6 +33,8 @@ RUN pip3 install pygame==1.9.6
 
 WORKDIR /home/erdos/workspace/pylot
 RUN git pull
+ENV PYLOT_SHA1 fdba02482f7be134a106479c96ad43273f4235d3
+RUN git reset --hard $PYLOT_SHA1
 
 # ============= PREPARE ENVIRONMENT FOR SIMULATION ============= #
 
