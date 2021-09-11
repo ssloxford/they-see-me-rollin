@@ -1,1 +1,4 @@
 rsa/tmp_figures/
+data/models/
+data/datasets
+data/results
