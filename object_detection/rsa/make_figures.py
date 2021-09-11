@@ -186,14 +186,6 @@ def figure7_incorrect_t_exposure():
     min_z = surface[-1].min()
     max_z = surface[-1].max()
 
-    f = surface[-1].flatten()
-    print(
-        "Logitech, in [0.5,2.0]: {}".format(
-            f[(f < 2.0) & (f > 0.5)].shape[0] / f.shape[0] * 100
-        )
-    )
-    print("Logitech, min_z: {}".format(surface[-1].min()))
-
     max_est_i = np.argmax(surface[-1].flatten())
     max_est = est_N.flatten()[max_est_i]
     max_true = true_N.flatten()[max_est_i]
@@ -230,17 +222,23 @@ def figure7_incorrect_t_exposure():
     ton = 200
     texp = texp = np.arange(32, 1000, 50)
     d_trst = 1 / (CAM_CONF["Axis"]["nrows"] * CAM_CONF["Axis"]["f"]) * 1e6
+
     surface, line, est_N, true_N = _get_d(ton, texp, d_trst)
+
+    min_z = surface[-1].min()
+    max_z = surface[-1].max()
+
+    max_est_i = np.argmax(surface[-1].flatten())
+    max_est = est_N.flatten()[max_est_i]
+    max_true = true_N.flatten()[max_est_i]
+
     xticks = [
         0,
         500,
         1000,
     ]
 
-    max_est_i = np.argmax(surface[-1].flatten())
-    max_est = est_N.flatten()[max_est_i]
-    max_true = true_N.flatten()[max_est_i]
-
+    surf = ax[1].plot_surface(*surface, cmap=cm.coolwarm, antialiased=False)
     ax[1].plot3D(*line, "black", linewidth=0.5, zorder=1000)
     ax[1].set_title("Axis (t_on = %d us)" % ton, fontsize=fs2)
     pmax = (
@@ -280,12 +278,6 @@ def figure7_incorrect_t_exposure():
     )
 
     f = surface[-1].flatten()
-    print(
-        "Axis, % under 2.0: {}".format(
-            f[(f < 2.0) & (f > 0.5)].shape[0] / f.shape[0] * 100
-        )
-    )
-    print("Axis, min_z: {}".format(surface[-1].min()))
 
     ax[0].view_init(30, 135)
     ax[1].view_init(30, 135)
