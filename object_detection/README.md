@@ -46,7 +46,7 @@ docker-compose up -d
 ```
 As soon as the container is up and running, you can attach to it directly by running:
 ```sh
-docker attach ra_evaluation
+docker attach ra_object_detection
 ```
 This is necessary to have the correct environment and folder structure to run the evaluation.
 
@@ -73,9 +73,11 @@ used for Figure 6.
 ## Running Attack on Object Detection Evaluation
 
 This part uses the `attack_object_detection.py` script.
-It requires tensorflow models that can be downloaded from the release file found in this
-repository. These should be available into `repository/evaluation/data/models/` (which is mapped to
+
+It requires tensorflow models that can be downloaded from the [release file](https://github.com/ssloxford/they-see-me-rollin/releases/download/v1.0/models.zip) found in this
+repository. These should be available into `repository/object_detection/data/models/` (which is mapped to
 `/home/data/models/` in the container).
+
 When evaluating the effect of the rolling shutter attack, we compare inferences between
 rolling-shutter corrupted frames with inferences on legitimate frames.
 To run inferences and store helpers results for inference on legit frames,
@@ -116,6 +118,6 @@ which stores figures in `/home/rsa/tmp_figures/`.
 
 # Recommended Hardware
 
-The two scripts `attack_object_detection.py` and `profile.py` would take hours to run
+The two scripts `attack_object_detection.py` and `profile.py` take hours to run
 for the entirety of the collected data, so we provide intermediate/final results files.
 

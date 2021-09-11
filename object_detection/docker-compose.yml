@@ -4,14 +4,14 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
-        image: theyseemerollin_artifacts_eval:theyseemerollin_artifacts_eval
+        image: theyseemerollin_artifacts_object_detection:theyseemerollin_object_detection
         ports:
             - "7331:7331"
         environment:
             - QT_X11_NO_MITSHM=1
             - DISPLAY=$DISPLAY
             - NVIDIA_VISIBLE_DEVICES=all
-        container_name: ra_evaluation
+        container_name: ra_object_detection
         # runtime: nvidia
         stdin_open: true
         tty: true
