@@ -108,7 +108,7 @@ This saves results in `/home/data/results/object_detection/<DATASET>/baseline/<v
 
 We provide the final `.csv`s extracted by executing the above script and concatenating
 all single-video `.csv` results in `/home/data/results/object_detection/`, named 
-`bdd100k_final.csv` and `virat_final.csv`.
+`bdd100k_final.csv` and `virat_final.csv`. These contain the information necessary to plot Figure 9 and 10.
 
 
 ## Training the Rolling Shutter Detection Defense
