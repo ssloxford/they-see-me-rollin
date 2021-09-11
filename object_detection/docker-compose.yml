@@ -1,6 +1,6 @@
 version: "3"
 services:
-    theyseemerolling:
+    object_detection:
         build:
             context: .
             dockerfile: Dockerfile
