@@ -271,6 +271,8 @@ if __name__ == "__main__":
         choices=[
             "ssd_inception_v2_coco_2018_01_28",
             "faster_rcnn_inception_v2_coco_2018_01_28",
+            "faster_rcnn_resnet50_coco_2018_01_28",
+            "ssd_mobilenet_v2_coco_2018_03_29"
         ],
     )
     parser.add_argument("-b", "--batch_size", type=int)

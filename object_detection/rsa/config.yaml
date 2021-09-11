@@ -15,9 +15,9 @@ defense:
   defaults:
     epochs: 2
     batch_size: 40
-    num_videos_train: 1
-    num_videos_val: 1
-    num_videos_test: 1
+    num_videos_train: 90
+    num_videos_val: 30
+    num_videos_test: 30 
     num_filters: 32
     kernel_size: [5, 5]
     strides: [2, 2]

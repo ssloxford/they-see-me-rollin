@@ -299,7 +299,7 @@ def make_training_writer():
 
 
 def get_all_pattern_fpaths(
-    folder: str = "/home/data/results/extracted_patterns/Axis/",
+    folder: str = "/home/data/results/extracted_patterns/Axis_patterns/",
 ) -> list:
     """Exaustively walks through a directory and returns all found .png images absolute paths.
 
