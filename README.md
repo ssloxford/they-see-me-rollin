@@ -27,7 +27,7 @@ In more detail, this repository is structred as follows:
 
 #### Section 7.1 - Targeting Object Detection
 
-The folder `object_detection` contains the source code we used in `Section 6.2 - Accuracy of the Shutter Model` and `Section 7.1 - Targeting Object Detection`.
+The folder `object_detection` contains the source code we used in `Section 6.2 - Accuracy of the Shutter Model`,  `Section 7.1 - Targeting Object Detection` and `Section 8.2 - Deep Learning Based Detection`.
 
 #### Section 7.2 - Comparison with Blinding Attack
 
