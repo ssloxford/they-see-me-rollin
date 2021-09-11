@@ -16,7 +16,7 @@ Example (run these two sequentially):
 
         $ python attack_object_detection.py \
             --pattern_filepath baseline \
-            --video_name b1c9c847-3bda4659 \
+            --video_name b1c9c847-3bda4659.mov \
             --model_name ssd_inception_v2_coco_2018_01_28
 
     Compute the corrupted performance (under attack) of the
@@ -26,7 +26,7 @@ Example (run these two sequentially):
 
         $ python attack_object_detection.py \
             --pattern_filepath /home/data/results/extracted_patterns/Axis/259Hz/Exposure\ 75/5/40.png \
-            --video_name b1c9c847-3bda4659 \
+            --video_name b1c9c847-3bda4659.mov \
             --model_name ssd_inception_v2_coco_2018_01_28
 
 """
@@ -262,8 +262,9 @@ def get_ds_iterator(img_fpaths: list, batch_size: int, height: int, width: int):
         A tf.data.Iterator iterating over the loaded images.
     """
     dataset = tf.data.Dataset.from_tensor_slices(img_fpaths)
+    lambda_load = lambda x: load_img(x, height=height, width=width)
     dataset = dataset.map(
-        lambda x: load_img(x, h=height, w=width), num_parallel_calls=AUTOTUNE
+        lambda_load, num_parallel_calls=AUTOTUNE
     )
     dataset = dataset.batch(batch_size, drop_remainder=True)
     return dataset.__iter__()

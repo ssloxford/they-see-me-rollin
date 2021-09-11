@@ -84,7 +84,7 @@ for a certain input video and a certain tensoflow model, run the following scrip
 ```sh
 python attack_object_detection.py \
             --pattern_filepath baseline \
-            --video_name b1c9c847-3bda4659 \
+            --video_name b1c9c847-3bda4659.mov \
             --model_name ssd_inception_v2_coco_2018_01_28
 ```
 This saves results in `/home/data/results/object_detection/<DATASET>/baseline/<video_name>/<model_name>/`.
@@ -97,7 +97,7 @@ compute the rolling-shutter effect.
 ```
 python attack_object_detection.py \
             --pattern_filepath /home/data/results/extracted_patterns/Axis/259Hz/Exposure\ 75/5/40.png \
-            --video_name b1c9c847-3bda4659 \
+            --video_name b1c9c847-3bda4659.mov \
             --model_name ssd_inception_v2_coco_2018_01_28
 ```
 This saves results in `/home/data/results/object_detection/<DATASET>/baseline/<video_name>/<model_name>/`.
