@@ -50,49 +50,6 @@ import utils
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 
-def load_model(model_name: str) -> tf.keras.Model:
-    """Load a model located in /home/data/models/<model_name>.
-
-    Returns:
-        A tensorflow model.
-
-    """
-    model_dir = "/home/data/models/{}/saved_model".format(model_name)
-    model = tf.saved_model.load(str(model_dir))
-    model = model.signatures["serving_default"]
-    return model
-
-
-def merge_args(
-    argparse_namespace: argparse.Namespace, yaml_dict: dict
-) -> argparse.Namespace:
-    """Merge arguments in a namespace with those in a dictionary.
-
-    Overrides each None argument in the namespace if the same key
-    is defined in the dictionary, adds arguments that are in the
-    dictionary to the namespace.
-
-    Args:
-        argparse_namespace: argument namespace.
-        yaml_dict: argument dictionary.
-
-    Returns:
-        A namespace populated with the arguments from the dictionary.
-    """
-    args_dict = vars(argparse_namespace)
-    overwritten = []
-    for key in args_dict.keys():
-        # overwrite parameters
-        if args_dict[key] is None and key in yaml_dict:
-            args_dict[key] = yaml_dict[key]
-            overwritten.append(key)
-    # add additional default parameters
-    for key in yaml_dict:
-        if key not in overwritten:
-            args_dict[key] = yaml_dict[key]
-    return argparse.Namespace(**args_dict)
-
-
 def extract_pattern_mask(patt_mask: np.array) -> np.array:
     """Flattens a 3d mask across the channel dimension.
 
@@ -188,67 +145,6 @@ def postprocess_attack_results(
     return result_df
 
 
-def get_bdd100k_imgs_filepaths(
-    subdir: str, video_name: str, frameskip: int = 10
-) -> list:
-    """Extracts frames from a video and returns the frames absolute filepaths.
-
-    Args:
-        subdir: subfolder in /home/data/datasets/bdd100k/videos/ where to
-                look for the video and extract frames.
-        video_name: filename of video file in
-                    /home/data/datasets/bdd100k/videos/<subdir>
-        frameskip: extract one frame every <frameskip> frames
-
-    Returns:
-        A list of absolute filepaths pointing to the extracted frames.
-    """
-    basedir = "/home/data/datasets/bdd100k/videos/"
-    # where to find the individual frames
-    single_frames_folder = f'{basedir}/{subdir}/{video_name.split(".")[0]}'
-    video_path = f"{basedir}/{subdir}/{video_name}"
-    # if frames where never extracted, then this function
-    # extracts them.
-    if (
-        not os.path.isdir(single_frames_folder)
-        or len(os.listdir(single_frames_folder)) < 500 / frameskip
-    ):
-        # then create a folder which will hold the extracted frames
-        os.makedirs(single_frames_folder, exist_ok=True)
-        frames = skvideo.io.vreader(video_path)
-        print("Extracting frames for {}".format(video_name))
-        for i, frame in enumerate(frames):
-            if i % frameskip == 0:
-                out_fpath = f"{single_frames_folder}/{str(i).zfill(5)}.jpg"
-                skimage.io.imsave(out_fpath, frame, check_contrast=False)
-
-    all_fnames = list(
-        filter(lambda x: x[-4:] == ".jpg", os.listdir(single_frames_folder))
-    )
-    all_fpaths = list(
-        sorted(map(lambda x: os.path.join(single_frames_folder, x), all_fnames))
-    )
-    return all_fpaths
-
-
-def load_img(file_path: str, height: int, width: int) -> tf.Tensor:
-    """Loads tensorflow Tensors from jpg images filepaths.
-
-    Args:
-        file_path: image filepath.
-        height: resize image to this height
-        width: resize image to this width
-
-    Returns:
-        A tf.Tensor with the resized image.
-    """
-    # load the raw data from the file as a string
-    img = tf.io.read_file(file_path)
-    img = tf.io.decode_jpeg(img, channels=3)
-    img = tf.image.resize(img, [height, width], method="bilinear")
-    return img
-
-
 def get_ds_iterator(img_fpaths: list, batch_size: int, height: int, width: int):
     """Creates an iterator (tf.data.Iterator) from a list of image filepaths.
 
@@ -262,10 +158,8 @@ def get_ds_iterator(img_fpaths: list, batch_size: int, height: int, width: int):
         A tf.data.Iterator iterating over the loaded images.
     """
     dataset = tf.data.Dataset.from_tensor_slices(img_fpaths)
-    lambda_load = lambda x: load_img(x, height=height, width=width)
-    dataset = dataset.map(
-        lambda_load, num_parallel_calls=AUTOTUNE
-    )
+    lambda_load = lambda x: utils.load_img(x, height=height, width=width)
+    dataset = dataset.map(lambda_load, num_parallel_calls=AUTOTUNE)
     dataset = dataset.batch(batch_size, drop_remainder=True)
     return dataset.__iter__()
 
@@ -390,7 +284,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     params = yaml.load(open("/home/rsa/config.yaml"), Loader=yaml.FullLoader)
-    args = merge_args(args, params["defaults"])
+    args = utils.merge_args(args, params["defaults"])
     video_id = args.video_name.split(".")[0]
 
     assert os.path.isfile(args.pattern_filepath) or args.pattern_filepath == "baseline"
@@ -403,7 +297,7 @@ if __name__ == "__main__":
         args.labels_path, use_display_name=True
     )
 
-    model = load_model(args.model_name)
+    model = utils.load_model(args.model_name)
 
     if args.pattern_filepath != "baseline":
         # setup pattern
@@ -424,7 +318,9 @@ if __name__ == "__main__":
         output_dir = f"/home/data/results/object_detection/{args.dataset_name}/baseline/{video_id}/{args.model_name}"
         setup_output_f(output_dir)
 
-    img_fpaths = get_bdd100k_imgs_filepaths(ds_args["dataset_subdir"], args.video_name)
+    img_fpaths = utils.get_bdd100k_imgs_filepaths(
+        ds_args["dataset_subdir"], args.video_name
+    )
     n = len(img_fpaths)
     img_fpaths = img_fpaths[: n // args.batch_size * args.batch_size]
     dataset_iter = get_ds_iterator(img_fpaths, args.batch_size, inp_h, inp_w)

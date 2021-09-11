@@ -1,6 +1,10 @@
 import skimage.io
+import skvideo.io
+import os
+import argparse
 import numpy as np
 import pandas as pd
+import tensorflow as tf
 
 
 def apply_pattern(base: np.array, pattern: np.array) -> np.array:
@@ -294,3 +298,107 @@ def get_iou(bb1: dict, bb2: dict) -> float:
     assert iou >= 0.0
     assert iou <= 1.0
     return iou
+
+
+def merge_args(
+    argparse_namespace: argparse.Namespace, yaml_dict: dict
+) -> argparse.Namespace:
+    """Merge arguments in a namespace with those in a dictionary.
+
+    Overrides each None argument in the namespace if the same key
+    is defined in the dictionary, adds arguments that are in the
+    dictionary to the namespace.
+
+    Args:
+        argparse_namespace: argument namespace.
+        yaml_dict: argument dictionary.
+
+    Returns:
+        A namespace populated with the arguments from the dictionary.
+    """
+    args_dict = vars(argparse_namespace)
+    overwritten = []
+    for key in args_dict.keys():
+        # overwrite parameters
+        if args_dict[key] is None and key in yaml_dict:
+            args_dict[key] = yaml_dict[key]
+            overwritten.append(key)
+    # add additional default parameters
+    for key in yaml_dict:
+        if key not in overwritten:
+            args_dict[key] = yaml_dict[key]
+    return argparse.Namespace(**args_dict)
+
+
+def get_bdd100k_imgs_filepaths(
+    subdir: str, video_name: str, frameskip: int = 10
+) -> list:
+    """Extracts frames from a video and returns the frames absolute filepaths.
+
+    Args:
+        subdir: subfolder in /home/data/datasets/bdd100k/videos/ where to
+                look for the video and extract frames.
+        video_name: filename of video file in
+                    /home/data/datasets/bdd100k/videos/<subdir>
+        frameskip: extract one frame every <frameskip> frames
+
+    Returns:
+        A list of absolute filepaths pointing to the extracted frames.
+    """
+    basedir = "/home/data/datasets/bdd100k/videos/"
+    # where to find the individual frames
+    single_frames_folder = f'{basedir}/{subdir}/{video_name.split(".")[0]}'
+    video_path = f"{basedir}/{subdir}/{video_name}"
+    # if frames where never extracted, then this function
+    # extracts them.
+    if (
+        not os.path.isdir(single_frames_folder)
+        or len(os.listdir(single_frames_folder)) < 500 / frameskip
+    ):
+        # then create a folder which will hold the extracted frames
+        os.makedirs(single_frames_folder, exist_ok=True)
+        frames = skvideo.io.vreader(video_path)
+        print("Extracting frames for {}".format(video_name))
+        for i, frame in enumerate(frames):
+            if i % frameskip == 0:
+                out_fpath = f"{single_frames_folder}/{str(i).zfill(5)}.jpg"
+                skimage.io.imsave(out_fpath, frame, check_contrast=False)
+
+    all_fnames = list(
+        filter(lambda x: x[-4:] == ".jpg", os.listdir(single_frames_folder))
+    )
+    all_fpaths = list(
+        sorted(map(lambda x: os.path.join(single_frames_folder, x), all_fnames))
+    )
+    return all_fpaths
+
+
+def load_model(model_name: str) -> tf.keras.Model:
+    """Load a model located in /home/data/models/<model_name>.
+
+    Returns:
+        A tensorflow model.
+
+    """
+    model_dir = "/home/data/models/{}/saved_model".format(model_name)
+    model = tf.saved_model.load(str(model_dir))
+    model = model.signatures["serving_default"]
+    return model
+
+
+def load_img(file_path: str, height: int, width: int) -> tf.Tensor:
+    """Loads tensorflow Tensors from jpg images filepaths.
+
+    Args:
+        file_path: image filepath.
+        height: resize image to this height
+        width: resize image to this width
+
+    Returns:
+        A tf.Tensor with the resized image.
+    """
+    # load the raw data from the file as a string
+    img = tf.io.read_file(file_path)
+    img = tf.io.decode_jpeg(img, channels=3)
+    img = tf.image.resize(img, [height, width], method="bilinear")
+    return img

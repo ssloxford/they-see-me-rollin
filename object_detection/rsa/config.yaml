@@ -11,4 +11,34 @@ defaults:
   batch_size: 10
   mscoco_label_map_path: /home/models/research/object_detection/data/mscoco_label_map.pbtxt
   dataset_name: "bdd100k"
-
+defense:
+  defaults:
+    epochs: 2
+    batch_size: 40
+    num_videos_train: 1
+    num_videos_val: 1
+    num_videos_test: 1
+    num_filters: 32
+    kernel_size: [5, 5]
+    strides: [2, 2]
+    use_dense: false
+    input_image_width: 640
+    input_image_height: 360
+    ratio_train_patterns: 0.6
+    ratio_val_patterns: 0.2
+    ratio_test_patterns: 0.2
+    log_every: 1
+    validate_every: 1
+  network_info:
+    ssd_inception_v2_coco_2018_01_28:
+        detection_features: FeatureExtractor/InceptionV2/InceptionV2/MaxPool_2a_3x3/MaxPool:0
+        n_neurons_before_dense: 20160
+    faster_rcnn_inception_v2_coco_2018_01_28:
+        detection_features: FirstStageFeatureExtractor/InceptionV2/InceptionV2/MaxPool_2a_3x3/MaxPool:0
+        n_neurons_before_dense: 123008
+    ssd_mobilenet_v2_coco_2018_03_29:
+        detection_features: FeatureExtractor/MobilenetV2/expanded_conv/input:0
+        n_neurons_before_dense: null
+    faster_rcnn_resnet50_coco_2018_01_28:
+        detection_features: FirstStageFeatureExtractor/resnet_v1_50/resnet_v1_50/pool1/MaxPool:0
+        n_neurons_before_dense: null
