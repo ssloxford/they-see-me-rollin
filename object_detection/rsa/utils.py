@@ -317,16 +317,17 @@ def merge_args(
         A namespace populated with the arguments from the dictionary.
     """
     args_dict = vars(argparse_namespace)
-    overwritten = []
+
     for key in args_dict.keys():
         # overwrite parameters
         if args_dict[key] is None and key in yaml_dict:
             args_dict[key] = yaml_dict[key]
-            overwritten.append(key)
+
     # add additional default parameters
     for key in yaml_dict:
-        if key not in overwritten:
+        if key not in args_dict.keys():
             args_dict[key] = yaml_dict[key]
+    print(args_dict)
     return argparse.Namespace(**args_dict)
 
 
