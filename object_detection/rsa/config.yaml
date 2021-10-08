@@ -13,6 +13,7 @@ defaults:
   dataset_name: "bdd100k"
 defense:
   defaults:
+    extracted_patterns_root_folder: /home/data/results/extracted_patterns/Axis/
     epochs: 2
     batch_size: 40
     num_videos_train: 90

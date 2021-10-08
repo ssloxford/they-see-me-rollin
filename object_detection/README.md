@@ -16,6 +16,7 @@ This folder includes everything you need to run the evaluation.
 │   ├── config.yaml                      # configuration data
 │   ├── make_figures.py                  # generates Figure 6, 7, 9 and 10
 │   ├── profile.py                       # script to perform analysis of RS affected rows
+│   ├── defense.py                       # script to train attack detection
 │   └── utils.py                         # utilities
 ├── data                                 
 │   ├── datasets                         # contains video datasets

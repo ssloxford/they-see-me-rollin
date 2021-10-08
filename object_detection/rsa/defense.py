@@ -299,9 +299,9 @@ def make_training_writer():
 
 
 def get_all_pattern_fpaths(
-    folder: str = "/home/data/results/extracted_patterns/Axis_patterns/",
+    folder: str,
 ) -> list:
-    """Exaustively walks through a directory and returns all found .png images absolute paths.
+    """Exhaustively walks through a directory and returns all found .png images absolute paths.
 
     Args:
         folder: folder to search.
@@ -344,7 +344,6 @@ def get_train_val_test_split(
         )
     )
     videos_list = shuffle(videos_list, random_state=random_seed)
-
     assert len(videos_list) >= (n_videos_train + n_videos_val + n_videos_test)
 
     chosen_videos_train = videos_list[:n_videos_train]
@@ -481,6 +480,7 @@ if __name__ == "__main__":
     parser.add_argument("--ratio_test_patterns", type=int)
     parser.add_argument("--log_every", type=int)
     parser.add_argument("--validate_every", type=int)
+    parser.add_argument("--extracted_patterns_root_folder", type=str)
 
     args = parser.parse_args()
 
@@ -507,7 +507,8 @@ if __name__ == "__main__":
 
     # load patterns and get split
     all_patterns = shuffle(
-        list(get_all_pattern_fpaths()), random_state=args.random_seed
+        list(get_all_pattern_fpaths(args.extracted_patterns_root_folder)),
+        random_state=args.random_seed
     )
     n_patterns = len(all_patterns)
     n_patterns_train = int(n_patterns * args.ratio_train_patterns)
